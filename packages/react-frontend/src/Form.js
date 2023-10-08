@@ -5,11 +5,13 @@ function Form(props) {
   const [person, setPerson] = useState({
     name: "",
     job: "",
+    id: "",
   });
   function handleChange(event) {
     const { name, value } = event.target;
-    if (name === "job") setPerson({ name: person["name"], job: value });
-    else setPerson({ name: value, job: person["job"] });
+    if (name === "job")
+      setPerson({ name: person["name"], job: value, id: person["id"] });
+    else setPerson({ name: value, job: person["job"], id: person["id"] });
   }
   function submitForm() {
     props.handleSubmit(person);
@@ -33,6 +35,7 @@ function Form(props) {
         value={person.job}
         onChange={handleChange}
       />
+
       <input type="button" value="Submit" onClick={submitForm} />
     </form>
   );

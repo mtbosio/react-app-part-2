@@ -15,16 +15,34 @@ function MyApp() {
   }, []);
 
   function removeOneCharacter(index) {
-    const updated = characters.filter((character, i) => {
-      return i !== index;
+    const path = `http://localhost:8000/users/${characters[index].id}`;
+
+    fetch(path, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+      if (response.status === 204) {
+        const updated = characters.filter((character, i) => {
+          return i !== index;
+        });
+        setCharacters(updated);
+      }
     });
-    setCharacters(updated);
   }
   function updateList(person) {
     postUser(person)
-      .then(() => setCharacters([...characters, person]))
+      .then((response) => {
+        if (response.status === 201) {
+          response.json().then((data) => {
+            setCharacters([...characters, data]);
+          });
+        }
+      })
+
       .catch((error) => {
-        console.log(error);
+        console.log("error");
       });
   }
 
